@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- Placeholder html where we can inject script tags to load encryption keys and algorithm. -->
+<html>
+<head>
+    <script language="JavaScript" type="text/javascript">
+        /* Encryption methods for wrapping ProtectPANandCVV to enable return of the result to java domain. */
+        function encryptWithCallbacks(cc, cvv, uuid) {
+            var result = ProtectPANandCVV(cc, cvv, true);
+            if (result != null && result.length >= 3) {
+                encryptionCallback.onResult(result[0], result[1], result[2], PIE.key_id, PIE.phase, uuid);
+            } else {
+                encryptionCallback.onError(uuid);
+            }
+        }
+        function encryptWithReturn(cc, cvv, uuid) {
+            var result = ProtectPANandCVV(cc, cvv, true);
+            if (result != null && result.length >= 3) {
+                return [result[0], result[1], result[2], PIE.key_id, PIE.phase, uuid];
+            } else {
+                // evaluateJavascript(script, callback) does not call callback if we return null here
+                return '';
+            }
+        }
+    </script>
+</head>
+</html>
